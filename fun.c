@@ -93,13 +93,20 @@ void AddJ(JudgeIn* J)
 {
 	int i;
 	i = J->last;
+
 	printf("\t  进入评委添加系统。\n");
-	printf("\t  输入评委名字：");
-	scanf("%d",J->elem[i].name);
-	printf("\t  输入评委性别：");
-	scanf("%d",J->elem[i].sex);
+
+	printf("\t  输入评委名字：\n");
+	scanf("%s",&J->elem[i].name);
+	getchar();
+
+	printf("输入评委性别：");
+	scanf("%c",&J->elem[i].sex);
+    getchar();
+
 	printf("\t  输入评委电话：");
-	scanf("%d",J->elem[i].phone);
+	scanf("%s",&J->elem[i].phone);
+
 	J->last++;
 	printf(" 添加评委信息成功。\n");
 }
