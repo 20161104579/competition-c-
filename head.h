@@ -12,10 +12,10 @@ struct entertain{
 
 typedef struct entertain NodeEntertain;
 
-struct Seqlist {
+typedef struct {
     NodeEntertain elem[100];
     int last;
-};
+}Seqlist;
 
 struct Judges {
 	char sex;
@@ -25,27 +25,33 @@ struct Judges {
 
 typedef struct Judges Judgesnode;
 
-struct JudgeIn {
+typedef struct {
 	Judgesnode elem[100];
 	int last;
-};
+}JudgeIn;
 
+void UI();
 void Menu(Seqlist* L, JudgeIn* J);
 
-void menu2(JudgeIn* J);
-void add(JudgeIn* J);
-void Copy2(JudgeIn* J);
-void Load2(JudgeIn* J);
-void Show(JudgeIn* J);
-void Query2(JudgeIn* J);
+void UIJ();
+int FindJ(JudgeIn* J);
+void MenuJ(JudgeIn* J);
+void AddJ(JudgeIn* J);
+void CopyJ(JudgeIn* J);
+void LoadJ(JudgeIn* J);
+void ShowJ(JudgeIn* J);
+void QueryJ(JudgeIn* J);
 
-void menu1(Seqlist* L, JudgeIn* J);
-void Add(Seqlist* L);
-void Del(Seqlist* L);
-void Query1(Seqlist* L);
-void Change(Seqlist* L);
-void Show1(Seqlist* L);
-void Sort(Seqlist* L);
-void Copy1(Seqlist* L);
-void Load1(Seqlist* L);
-void Grade(Seqlist* L, Judges* J);
+void UIL();
+int FindL(Seqlist* L);
+void MenuL(Seqlist* L, JudgeIn* J);
+void AddL(Seqlist* L);
+void DelL(Seqlist* L);
+void QueryL(Seqlist* L);
+void ChangeL(Seqlist* L);
+void ShowL(Seqlist* L);
+void SortL(Seqlist* L);
+void CopyL(Seqlist* L);
+void LoadL(Seqlist* L);
+
+void Grade(Seqlist* L, JudgeIn* J);
