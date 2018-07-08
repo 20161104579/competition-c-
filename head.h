@@ -3,32 +3,51 @@
 #include <malloc.h>
 #include <string.h>
 
+struct
 
-
-struct student{
-	double num;
-	char name[20];
-	int score[3];
-	int sum;
+struct entertain{
+    char name[20];
+    char type[13];
+    char phone[13];
+    double score;
 };
 
-typedef struct student ElemType;
-typedef struct
-{
-	ElemType  elem[100];
-	int       last;
-}SeqList;
+typedef struct player NodePlayer;
 
-void Query(SeqList* L);
-void Add(SeqList* L);
-void menu();
-void Change(SeqList *L);
-void Insert(SeqList* L);
-void quicksort(SeqList* L, int left, int right);
-void sortscore(SeqList* L);
-void Show(SeqList *L);
-int Find(SeqList* L);
-void load(SeqList* L);
-void copydata(SeqList* L);
-void Del(SeqList* L);
+struct Seqlist {
+    NodePlayer elem[100];
+    int last;
+};
 
+struct Judges {
+	char sex;
+	char name[20];
+	char phone[20];
+};
+
+typedef struct Judge Judgesnode;
+
+struct JudgeIn {
+	Judgesnode elem[100];
+	int last;
+};
+char* Trim(char & str);
+void Menu(Seqlist* L, Judges* J);
+
+void menu2(Judges* J);
+void add(Judges* J);
+void Copy2(Judges* J);
+void Load2(Judges* J);
+void Show(Judges* J);
+void Query2(Judges* J);
+
+void menu1(Seqlist* L, Judges* J);
+void Add(Seqlist* L);
+void Del(Seqlist* L);
+void Query1(Seqlist* L);
+void Change(Seqlist* L);
+void Show1(Seqlist* L);
+void Sort(Seqlist* L);
+void Copy1(Seqlist* L);
+void Load1(Seqlist* L);
+void Grade(Seqlist* L, Judges* J);

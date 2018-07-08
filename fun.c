@@ -1,125 +1,440 @@
-
 #include "head.h"
 
-void load(SeqList *L)
+void Copy2(Judges* J)
 {
-	int i = 0, Score[5], Sum;
-	double Num;
-	char Name[20];
-	FILE* fp;
-	fp = fopen("student.txt", "a+");
-	if(fp == NULL)
-		printf("The file can't be opened!\n");
+	int i;
+	ofstream file(fileName, ios::out);
+	if (!file)
+	{
+		cout << "\t  文件打开失败！" << endl;
+	}
 	else
 	{
-		while(fscanf(fp,"%lf %s %d %d %d %d",&Num, Name, &Score[0], &Score[1], &Score[2], &Sum)!=EOF)
+		for (i = 0; i < J->last; i++)
 		{
-			L->elem[i].num = Num;
-			strcpy(L->elem[i].name, Name);
-			L->elem[i].score[0] = Score[0];
-			L->elem[i].score[1] = Score[1];
-			L->elem[i].score[2] = Score[2];
-			L->elem[i].sum = Sum;
-			i++;
-			L->last++;
+			file << J->elem[i].name << ","<< J->elem[i].sex << ","<< J->elem[i].phone << "\n";
 		}
-		fclose(fp);
 	}
 }
 
-void copydata(SeqList* L)
+void Load2(Judges* J)
 {
-	int i;
-	FILE* fp;
-	fp = fopen("student.txt", "w+");
-	if(fp == NULL)
-		printf("The file can't be opened!\n");
-	else
-	{
-		for(i=0; i<L->last; i++)
-		{
-			fprintf(fp,"%lf %s %d %d %d %d\n",L->elem[i].num, L->elem[i].name, L->elem[i].score[0], L->elem[i].score[1], L->elem[i].score[2], L->elem[i].sum);
+	string str;
+	int i = 1, j = 0, s = 0;
+	ifstream file(fileName, ios::in);
+	while (getline(file, str)) {
+		istringstream sin(str);
+		vector<string>fields;
+		string field;
+		while (getline(sin, field, ',')) {
+			fields.push_back(field);
 		}
-		printf("信息保存成功！\n");
-		fclose(fp);
-		return;
+		J->elem[s].name = Trim(fields[0]);
+		J->elem[s].sex = Trim(fields[1]);
+		J->elem[s].phone = Trim(fields[2]);
+		s++;
+	}
+	J->last = s;
+}
+
+void UI2()
+{
+	printf("\t\t\t|-----------------菜单-----------------|\n");
+	printf("\t\t\t|------------1.添加评委信息------------|\n");
+	printf("\t\t\t|------------2.显示全部评委信息--------|\n");
+	printf("\t\t\t|------------3.评委信息查询------------|\n");
+	printf("\t\t\t|------------0.退出评委信息系统--------|\n");
+}
+
+void menu2(Judges* J)
+{
+	UI2();
+	//	load2(J);//加载文件中评委数据
+	int i, have = 1;
+	printf("选择要进行的功能：");
+	while (cin>>i)
+	{
+		have = 1;
+		switch (i)
+		{
+		case 1: add(J); break;
+		case 2: Show(J); break;
+		case 3: Query2(J); break;
+		case 0: have = 0; break;
+		}
+		Copy2(J);
+		if (have == 0) {
+			cout << "\t  裁判信息保存成功！" << endl;
+			break;
+
+		}
+		printf("选择要进行的功能：");
 	}
 }
 
-void menu()
-{
-	printf("|功能集合|\n");
-	printf("|1.添加信息|\n");
-	printf("|2.删除信息|\n");
-	printf("|3.总成绩排名|\n");
-	printf("|4.成绩查询|\n");
-	printf("|5.修改信息|\n");
-	printf("|6.显示全部信息|\n");
-	printf("|7.插入新信息|\n");
-	printf("|0.退出并保存|\n");
-}
-
-void Add(SeqList* L)
+void add(Judges* J)
 {
 	int i;
-	printf("增加学生信息：\n");
+	i = J->last;
+	printf("\t  进入评委添加系统。\n");
+	printf("\t  输入评委名字：");
+	cin>>J->elem[i].name;
+	printf("\t  输入评委性别：");
+	cin>>J->elem[i].sex;
+	printf("\t  输入评委电话：");
+	cin>>J->elem[i].phone;
+	J->last++;
+	cout << "\t  添加评委信息成功。" << endl;
+}
 
-	i = L->last;
-	printf("学号：");
-	scanf("%lf", &L->elem[i].num);
+void Show(Judges* J)
+{
+	printf("进入显示全部评委信息系统：\n");
+	int i;
+	printf("\t\t|      姓名      | 性别 |        电话号码        |\n");
+	for (i = 0; i < J->last; i++)
+	{
+		cout << "\t\t|" << setw(16) << setfill(' ') << right << J->elem[i].name;
+		cout << "|" << setw(6) << setfill(' ') << right << J->elem[i].sex;
+		cout << "|" << setw(24) << setfill(' ') << right << J->elem[i].phone << "|" << endl;
+		//cout<<"\t\t|     "<<J->elem[i].name<<"     |  "<<J->elem[i].sex<<"  |       "<<J->elem[i].phone<<"       |\n";
+	}
 
-	printf("姓名：");
-	scanf("%s", L->elem[i].name);
+}
 
-	printf("成绩：（英语，计算机，数学）\n");
+int Find2(Judges* J)//查找函数，找到返回下标，找不到返回-1
+{
+	string Name;
+	cout << "\t  请输入要查找的评委名字：";
+	cin >> Name;
+	int i = 0;
+	while ((i < J->last) && !(J->elem[i].name == Name)) {
+		i++;
+	}
+	if (i < J->last)
+		return i;
+	else
+		return -1;
+}
 
-	scanf("%d%d%d", &L->elem[i].score[0], &L->elem[i].score[1],&L->elem[i].score[2]);
+void Query2(Judges* J)
+{
+	cout << "\t  已进入评委信息查找系统"<<endl;
+	int i;
+	i = Find2(J);
+	if (i != -1) {
+		cout << "找到了" << J->elem[i].name << "评委的信息！" << endl;
+		printf("\t\t|      姓名      | 性别 |        电话号码        |\n");
+		cout << "\t\t|" << setw(16) << setfill(' ') << right << J->elem[i].name;
+		cout << "|" << setw(6) << setfill(' ') << right << J->elem[i].sex;
+		cout << "|" << setw(24) << setfill(' ') << right << J->elem[i].phone << "|" << endl;
+	}
+	else
+		cout << "\t  抱歉，没有此人信息。" << endl;
+
+}
+
+void Load1(Seqlist* L)
+{
+	string str;
+	int i = 1, j = 0, s = 0;
+	string scores;
+	ifstream file(fileNames, ios::in);
+	while (getline(file, str)) {
+		istringstream sin(str);
+		vector<string>fields;
+		string field;
+		while (getline(sin, field, ',')) {
+			fields.push_back(field);
+		}
+		L->elem[s].player_name = Trim(fields[0]);
+		L->elem[s].sex = Trim(fields[1]);
+		L->elem[s].classroom = Trim(fields[2]);
+		L->elem[s].phone = Trim(fields[2]);
+		L->elem[s].show_name = Trim(fields[2]);
+		L->elem[s].category = Trim(fields[2]);
+		scores = Trim(fields[2]);
+		L->elem[s].score = atof(scores.c_str());
+		s++;
+	}
+	L->last = s;
+}
+string doubleTranStr(double integer) {
+	stringstream ss;
+	ss << integer;
+	return ss.str();
+}
+void Copy1(Seqlist* L)
+{
+	int i;
+	string Score;
+	ofstream file(fileNames, ios::out);
+	if (!file)
+	{
+		cout << "\t  文件打开失败！" << endl;
+	}
+	else
+	{
+		for (i = 0; i < L->last; i++)
+		{
+			Score = doubleTranStr(L->elem[i].score);
+			file << L->elem[i].player_name << "," << L->elem[i].sex << "," << L->elem[i].classroom<<","<< L->elem[i].phone << ","<< L->elem[i].show_name << ","<< L->elem[i].category << "\n";
+		}
+	}
+}
 
 
-	L->elem[i].sum = L->elem[i].score[0] + L->elem[i].score[1] + L->elem[i].score[2];
+void UI1()
+{
+	cout<<"\t\t\t|-----------------菜单-----------------|"<<endl;
+	cout<<"\t\t\t|------------1.添加选手信息------------|"<<endl;
+	cout<<"\t\t\t|------------2.删除选手信息------------|"<<endl;
+	cout<<"\t\t\t|------------3.对总成绩排名------------|"<<endl;
+	cout<<"\t\t\t|------------4.成绩查询----------------|"<<endl;
+	cout<<"\t\t\t|------------5.修改选手信息------------|"<<endl;
+	cout<<"\t\t\t|------------6.显示全部选手信息--------|"<<endl;
+	cout<<"\t\t\t|------------7.对选手进行打分----------|"<<endl;
+	cout<<"\t\t\t|------------0.退出选手信息系统--------|"<<endl;
+}
+
+void menu1(Seqlist* L, Judges* J)
+{
+	UI1();
+	int i, have = 1;
+	cout << "选择要进行的功能：";
+	while (cin>>i)
+	{
+		switch (i)
+		{
+			case 1:Add(L); break;
+			case 2:Del(L); break;
+			case 3:Sort(L); break;
+			case 4:Query1(L); break;
+			case 5:Change(L); break;
+			case 6:Show1(L); break;
+			case 7:Grade(L, J); break;
+			case 0:have = 0; break;
+		}
+		Copy1(L);
+		if (have == 0)
+			break;
+		cout << "选择要进行的功能：" ;
+	}
+//	copy(L);
+}
+
+void Add(Seqlist* L)
+{
+	cout << "进入选手信息添加系统。" << endl;
+	int i = L->last;
+	cout << "\t  选手姓名：";
+	cin >> L->elem[i].player_name;
+	cout << "\t  选手性别：";
+	cin >> L->elem[i].sex;
+	cout << "\t  所在班级：";
+	cin >> L->elem[i].classroom;
+	cout << "\t  节目类型：";
+	cin >> L->elem[i].category;
+	cout << "\t  节目名称：";
+	cin >> L->elem[i].show_name;
+	cout << "\t  选手电话号：";
+	cin >> L->elem[i].phone;
+	L->elem[i].score = -1;
 	L->last++;
-	printf("\n增加成功！------ 学号：%.0lf\n", L->elem[i].num);
-
+	cout << "\t  选手信息添加成功。"<<endl;
 }
 
-void Del(SeqList* L)
+int Find2(Seqlist* L)
 {
-	int i, s;
-
-	printf("删除信息：\n");
-
-	s = Find(L) - 1;
-
-	for(i=s; i<L->last; i++)
+	cout << "\t  选择要查找的方式：";
+	cout << "1.名字查找，2.电话号号查找，3.节目名字查找\n";
+	int have, i=0;
+	string name, names, phones;
+	cin >> have;
+	switch (have)
 	{
-		L->elem[i] = L->elem[i+1];
+		case 1: {
+			cout << "\t  输入名字：";
+			cin >> name;
+			while((i<L->last)&&(!(name==L->elem[i].player_name)))
+				i++;
+		}
+				break;
+		case 2: {
+			cout << "\t  输入电话：";
+			cin >> phones;
+			while ((i<L->last) && (!(phones == L->elem[i].phone)))
+				i++;
+		}
+				break;
+		case 3: {
+			cout << "\t  输入节目名字：";
+			cin >> names;
+			while ((i<L->last) && (!(names == L->elem[i].show_name)))
+				i++;
+		}
+				break;
 	}
-
-	L->last--;
-	printf("删除成功！\n");
+	if (i < L->last)
+		return i;
+	else
+		return -1;
 }
 
-
-void quicksort(SeqList* L,int left, int right)
+void Del(Seqlist* L)
 {
-	ElemType t, temp;
+	cout<<"已进入选手信息删除系统\n";
+	int s, i;
+	s = Find2(L);
+	if (s == -1)
+		cout<<"未找到选手信息！\n";
+	else
+	{
+		cout << "\t  要删除的选手信息是：" << endl;
+		cout << "\t\t|   姓名   | 性别 |  班级信息  |  节目类型  |   节目名称   |	电话号	| 成绩 |" << endl;
+		cout << "\t\t|" << setw(10) << setfill(' ') << right << L->elem[s].player_name;
+		cout << "|" << setw(6) << setfill(' ') << right << L->elem[s].sex;
+		cout << "|" << setw(12) << setfill(' ') << right << L->elem[s].classroom;
+		cout << "|" << setw(12) << setfill(' ') << right << L->elem[s].category;
+		cout << "|" << setw(14) << setfill(' ') << right << L->elem[s].show_name;
+		cout << "|" << setw(12) << setfill(' ') << right << L->elem[s].phone;
+		cout << "|" << setw(6) << setfill(' ') << right << L->elem[s].score << "|" << endl;
+		for (i = s; i<L->last; i++)
+			L->elem[i] = L->elem[i + 1];
+		L->last--;
+		cout<<"\t删除成功\n";
+	}
+}
+
+void Query1(Seqlist* L)
+{
+	cout << "\t  进入选手信息查询系统。" << endl;
+	int s = Find2(L);
+	if (s == -1)
+		cout << "未找到选手信息！" << endl;
+	else
+	{
+		cout << "\t  找到了" << L->elem[s].player_name << "选手。" << endl;
+		cout << "\t\t|   姓名   | 性别 |  班级信息  |  节目类型  |   节目名称   |	电话号	| 成绩 |" << endl;
+		cout << "\t\t|" << setw(10) << setfill(' ') << right << L->elem[s].player_name;
+		cout << "|" << setw(6) << setfill(' ') << right << L->elem[s].sex;
+		cout << "|" << setw(12) << setfill(' ') << right << L->elem[s].classroom;
+		cout << "|" << setw(12) << setfill(' ') << right << L->elem[s].category;
+		cout << "|" << setw(14) << setfill(' ') << right << L->elem[s].show_name;
+		cout << "|" << setw(12) << setfill(' ') << right << L->elem[s].phone;
+		cout << "|" << setw(6) << setfill(' ') << right << L->elem[s].score << "|" << endl;
+	}
+}
+
+void Change(Seqlist* L)
+{
+	cout << "\t  进入选手信息修改系统" << endl;
+	int s = Find2(L);
+	int have;
+	if (s == -1)
+		cout << "未找到选手信息！" << endl;
+	else
+	{
+		cout << "\t  即将修改" << L->elem[s].player_name << "选手信息。" << endl;
+		cout << "\t  选择要修改的信息：1.修改节目名字 2.修改节目类型 3.修改班级信息 4.修改电话号码" << endl;
+		cin >> have;
+		switch (have)
+		{
+			case 1:cin >> L->elem[s].show_name; break;
+			case 2:cin >> L->elem[s].category; break;
+			case 3:cin >> L->elem[s].classroom; break;
+			case 4:cin >> L->elem[s].phone; break;
+		}
+		cout << "\t  修改完成，新信息为：" << endl;
+		cout << "\t\t|   姓名   | 性别 |  班级信息  |  节目类型  |   节目名称   |	电话号	| 成绩 |" << endl;
+		cout << "\t\t|" << setw(10) << setfill(' ') << right << L->elem[s].player_name;
+		cout << "|" << setw(6) << setfill(' ') << right << L->elem[s].sex;
+		cout << "|" << setw(12) << setfill(' ') << right << L->elem[s].classroom;
+		cout << "|" << setw(12) << setfill(' ') << right << L->elem[s].category;
+		cout << "|" << setw(14) << setfill(' ') << right << L->elem[s].show_name;
+		cout << "|" << setw(12) << setfill(' ') << right << L->elem[s].phone;
+		cout << "|" << setw(6) << setfill(' ') << right << L->elem[s].score << "|" << endl;
+	}
+}
+
+void Grade(Seqlist* L, Judges* J)
+{
+	int s, i, min, max;
+	double sum = 0.0;
+	int score[100];
+	int num;//评委数
+	int people = J->last;
+	cout << people;
+	num = J->last;
+
+	s = Find2(L);
+	if (s == -1)
+		printf("未找到选手信息。\n");
+	else
+	{
+		cout << "即将对" << L->elem[s].player_name << "选手进行打分。\n输入评委打分成绩（共" << num << "个评委）" << endl;
+		for (i = 0; i<J->last; i++)
+		{
+			cout << J->elem[i].name << "评委给他的分数是：";
+			cin>>score[i];
+			sum += score[i];
+		}
+		min = score[0];
+		max = score[0];
+		for (i = 0; i<J->last; i++)
+		{
+			if (score[i]<min)
+				min = score[i];
+			if (score[i]>max)
+				max = score[i];
+		}
+		if (num > 2)
+		{
+			sum = sum - max;
+			sum = sum - min;
+			people -= 2;
+		}
+		sum = sum / people;
+		L->elem[s].score = sum;
+		cout << "最后他的得分是：" << sum << ",他的分数将保存在他的信息中。。。。\n";
+	}
+}
+
+void Show1(Seqlist* L)
+{
+	cout << "已进入选手信息显示系统，即将显示全部选手的信息：" << endl;
+	int i;
+	cout << "\t\t|   姓名   | 性别 |  班级信息  |  节目类型  |   节目名称   |	电话号	| 成绩 |" << endl;
+	for (i = 0; i < L->last; i++)
+	{
+		cout << "\t\t|" << setw(10) << setfill(' ') << right << L->elem[i].player_name;
+		cout << "|" << setw(6) << setfill(' ') << right << L->elem[i].sex;
+		cout << "|" << setw(12) << setfill(' ') << right << L->elem[i].classroom;
+		cout << "|" << setw(12) << setfill(' ') << right << L->elem[i].category;
+		cout << "|" << setw(14) << setfill(' ') << right << L->elem[i].show_name;
+		cout << "|" << setw(12) << setfill(' ') << right << L->elem[i].phone;
+		cout << "|" << setw(6) << setfill(' ') << right << L->elem[i].score<<"|"<<endl;
+	}
+}
+
+void quicksort_min(Seqlist* L, int left, int right)
+{
+	NodePlayer t, temp;
 	int i, j;
 
-	if(left>right)
+	if (left>right)
 		return;
 	temp = L->elem[left];
 	j = right;
 	i = left;
 
-	while(i!=j)
+	while (i != j)
 	{
-		while(L->elem[j].sum>=temp.sum && i<j)
+		while (L->elem[j].score >= temp.score && i<j)
 			j--;
-
-		while(L->elem[i].sum<=temp.sum && i<j)
+		while (L->elem[i].score <= temp.score&& i<j)
 			i++;
-
-		if(i<j)
+		if (i<j)
 		{
 			t = L->elem[j];
 			L->elem[j] = L->elem[i];
@@ -130,137 +445,89 @@ void quicksort(SeqList* L,int left, int right)
 	L->elem[left] = L->elem[i];
 	L->elem[i] = temp;
 
-	quicksort(L, left, i-1);
-	quicksort(L, i+1, right);
+	quicksort_min(L, left, i - 1);
+	quicksort_min(L, i + 1, right);
 }
 
-void sortscore(SeqList* L)
+void quicksort_max(Seqlist* L, int left, int right)
 {
-	printf("开始排序");
+	NodePlayer t, temp;
+	int i, j;
 
-	quicksort(L, 0,L->last-1);
+	if (left>right)
+		return;
+	temp = L->elem[left];
+	j = right;
+	i = left;
 
-	printf("排序完成！\n");
-}
-
-int Find(SeqList* L)
-{
-	int i=0;
-	double n;
-
-	printf("输入要查找的学号：\n");
-
-	scanf("%lf", &n);
-
-	while ((i <= L->last) && (L->elem[i].num != n))
-		i++;
-	if(i<=L->last)
-		return i+1;
-	else
-		return -1;
-}
-
-void Insert(SeqList* L)
-{
-	int i, s;
-	printf("插入信息系统：\n");
-
-	printf("插入位置：");
-
-	scanf("%d", &s);
-	s--;
-
-	L->last++;
-
-	for(i=L->last-1; i>s; i--)
+	while (i != j)
 	{
-		L->elem[i] = L->elem[i-1];
-	}
-
-	printf("学号：");
-	scanf("%lf", &L->elem[i].num);
-
-	printf("姓名：");
-	scanf("%s", L->elem[i].name);
-
-	printf("成绩：（英语，计算机，数学）\n");
-
-	scanf("%d%d%d", &L->elem[i].score[0], &L->elem[i].score[1],&L->elem[i].score[2]);
-
-	L->elem[s].sum = L->elem[s].score[0] + L->elem[s].score[1] + L->elem[s].score[2];
-
-	printf("\n添加成功！------ 学号为：%.0lf\n", L->elem[s].num);
-
-}
-void Query(SeqList* L)
-{
-	int i;
-
-	printf("查找信息：\n");
-
-	i = Find(L);
-
-	if(i!=-1)
-		printf("位置在%d\n",i);
-	else
-		printf("no such a person\n");
-
-}
-
-void Change(SeqList *L)
-{
-	int i, s;
-	int have;
-	printf("修改信息：\n");
-
-	s = Find(L) - 1;
-
-	if(s != -1)
-	{
-		printf("学号为%.0lf的学生信息。",L->elem[s].num);
-		printf("选择要修改的信息：\n\t1.修改学号。\n\t2.修改名字。\n\t3.修改英语成绩。\n\t4.修改计算机成绩。\n\t5.修改数学成绩。\n");
-
-		scanf("%d", &have);
-
-		printf("请输入要修改的信息：");
-
-		switch(have)
+		while (L->elem[j].score <= temp.score && i<j)
+			j--;
+		while (L->elem[i].score >= temp.score&& i<j)
+			i++;
+		if (i<j)
 		{
-			case 1:
-				scanf("%lf",&L->elem[s].num);
-				break;
-			case 2:
-				scanf("%s",L->elem[s].name);
-				break;
-			case 3:
-				scanf("%d",&L->elem[s].score[0]);
-				break;
-			case 4:
-				scanf("%d",&L->elem[s].score[1]);
-				break;
-			case 5:
-				scanf("%d",&L->elem[s].score[2]);
-				break;
+			t = L->elem[j];
+			L->elem[j] = L->elem[i];
+			L->elem[i] = t;
 		}
-
-		if( have==3 || have==4 || have==5 )
-			L->elem[s].sum = L->elem[s].score[0] + L->elem[s].score[1] + L->elem[s].score[2];
-		printf("修改成功!\n");
 	}
 
-	else
-		printf("未找到学生信息！\n");
+	L->elem[left] = L->elem[i];
+	L->elem[i] = temp;
+
+	quicksort_max(L, left, i - 1);
+	quicksort_max(L, i + 1, right);
 }
 
-void Show(SeqList *L)
+void Sort(Seqlist* L)
 {
-	printf("显示全部信息：\n");
-	int i;
-	printf("|     学号     |   姓名   | 英语成绩 | 计算机成绩 | 数学成绩 |  总成绩  |\n");
-	for(i=0; i<L->last; i++)
-	{
-		printf("|%15.0lf|%10s|%5d|%5d|%5d|%5d|\n",L->elem[i].num, L->elem[i].name, L->elem[i].score[0], L->elem[i].score[1], L->elem[i].score[2],L->elem[i].sum);
-	}
+	int have;
+	printf("\t  进入自动排序系统");
+	cout << "\t  选择排名方法，1.从小到大，2.从大到小" << endl;
+	cin >> have;
+	if(have==1)
+		quicksort_min(L, 0, L->last - 1);
+	else
+		quicksort_max(L, 0, L->last - 1);
+	printf("排序完成！\n");
+	Show1(L);
 }
 
+void UI()
+{
+	printf("\t\t\t|-----------------菜单-----------------|\n");
+	printf("\t\t\t|------------1.进入选手信息系统--------|\n");
+	printf("\t\t\t|------------2.进入评委信息系统--------|\n");
+	printf("\t\t\t|------------0.退出系统----------------|\n");
+}
 
+string Trim(string& str)
+{
+	str.erase(0, str.find_first_not_of("\t\r\n"));
+	str.erase(str.find_last_not_of("\t\r\n") + 1);
+	return str;
+}
+
+void Menu(Seqlist* L, Judges* J)
+{
+	UI();//加载菜单
+	int i, have = 1;
+	Load2(J);
+	Load1(L);
+	printf("选择要进行的功能：");
+	while (cin>>i)
+	{
+		switch (i)
+		{
+		case 1: menu1(L, J); break;
+		case 2: menu2(J); break;
+		case 0: have = 0; break;
+		}
+		if (have == 0)
+			break;
+		UI();//加载菜单
+		printf("选择要进行的功能：");
+	}
+}
