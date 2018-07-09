@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1531134474 source:c:\users\chwnrui\documents\candc++\scoreofcompetition\fun.c
+1531144097 source:c:\users\chwnrui\documents\candc++\scoreofcompetition\fun.c
 	"head.h"
 
 1531133781 c:\users\chwnrui\documents\candc++\scoreofcompetition\head.h
@@ -12,7 +12,7 @@
 1531133357 source:c:\users\chwnrui\documents\candc++\scoreofcompetition\main.c
 	"head.h"
 
-1531134207 source:c:\users\chwnrui\documents\candc++\scoreofcompetition\extra.cpp
+1531142035 source:c:\users\chwnrui\documents\candc++\scoreofcompetition\extra.cpp
 	"cpp.h"
 	<iostream>
 	<fstream>

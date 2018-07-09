@@ -1,54 +1,11 @@
 #include "head.h"
 
-void UIJ()
-{
-	printf("------菜单\n");
-	printf("-----1.添加评委信息\n");
-	printf("-----2.显示全部评委信息\n");
-	printf("-----3.评委信息查询\n");
-	printf("-----0.退出评委信息系统\n");
-}
-
-void MenuJ(JudgeIn* J)
-{
-	int i, have = 1;
-
-	while (UIJ(),printf("选择要进行的功能："),scanf("%d",&i))
-	{
-		have = 1;
-
-		switch (i)
-		{
-		case 1:
-		    AddJ(J);
-		    break;
-		case 2:
-		    ShowJ(J);
-            break;
-		case 3:
-		    QueryJ(J);
-		    break;
-		case 0:
-		    have = 0;
-		    break;
-		}
-
-		CopyJ(J);
-
-		if (have == 0) {
-			printf(" 裁判信息保存成功\n");
-			break;
-
-		}
-	}
-}
-
 void AddJ(JudgeIn* J)
 {
 	int i;
 	i = J->last;
 
-	printf("进入评委添加系统。\n");
+	printf("评委添加：\n");
 
 	printf("输入评委名字：\n");
 	scanf("%s",&J->elem[i].name);
@@ -70,7 +27,7 @@ void ShowJ(JudgeIn* J)
 {
     int i;
 
-	printf("进入显示全部评委信息系统：\n");
+	printf("显示全部评委信息：\n");
 	printf("|      姓名      | 性别 |        电话号码        |\n");
 	for (i = 0; i < J->last; i++)
 	{
@@ -86,11 +43,11 @@ int FindJ(JudgeIn* J)
 	char Name[20];
 	int i=0;
 
-	printf("请输入要查找的评委名字:\n");
+	printf("输入要查找的评委名字:\n");
 	scanf("%s",&Name);
 	getchar();
 
-	while ((i < J->last) && !(J->elem[i].name == Name)) {
+	while ((i < J->last) && (strcmp(Name,J->elem[i].name))) {
 		i++;
 	}
 	if (i < J->last)
@@ -102,15 +59,16 @@ int FindJ(JudgeIn* J)
 void QueryJ(JudgeIn* J)
 {
     int i;
-	printf("已进入评委信息查找系统\n");
+	printf("评委信息查找\n");
 
 	i = FindJ(J);
+
 	if (i != -1) {
-		printf("查找结束，已经找到信息.姓名为%s",J->elem[i].name);
-		printf("|  姓名  | 性别 |        电话号码        |\n");
-        printf("|%16s",J->elem[i].name);
-		printf("|%6s",J->elem[i].sex);
-		printf("|%24s",J->elem[i].phone);
+		printf("查找结束，已经找到信息\n");
+		printf("|  姓名 | 性别 |  电话号码        |\n");
+        printf("|%6s",J->elem[i].name);
+		printf("|%3s",J->elem[i].sex);
+		printf("|%13s|\n",J->elem[i].phone);
 	}
 	else
 		printf("抱歉，没有此人信息。\n");
@@ -170,64 +128,11 @@ void CopyL(Seqlist* L)
 }
 */
 
-void UIL()
-{
-	printf("-------菜单\n");
-	printf("1.添加选手信息\n");
-	printf("2.删除选手信息|\n");
-	printf("3.对总成绩排名\n");
-	printf("4.成绩查询\n");
-	printf("5.修改选手信息\n");
-	printf("6.显示全部选手信息|\n");
-	printf("7.对选手进行打分\n");
-	printf("0.退出选手信息系统\n");
-}
-
-void MenuL(Seqlist* L, JudgeIn* J)
-{
-	int i, have = 1;
-
-	while (UIL(),printf("选择要进行的功能：\n"),scanf("%d",&i))
-	{
-		switch (i)
-		{
-			case 1:
-			    AddL(L);
-			    break;
-			case 2:
-			    DelL(L);
-			    break;
-			case 3:
-			    SortL(L);
-			    break;
-			case 4:
-			    QueryL(L);
-			    break;
-			case 5:
-			    ChangeL(L);
-			    break;
-			case 6:
-			    ShowL(L);
-			    break;
-			case 7:
-			    Grade(L, J);
-			    break;
-			case 0:
-			    have = 0;
-			    break;
-		}
-
-		CopyL(L);
-		if (have == 0)
-			break;
-	}
-}
-
 void AddL(Seqlist* L)
 {
     int i = L->last;
 
-	printf("进入选手信息添加系统。\n");
+	printf("添加节目。\n");
 
 	printf("节目类型：\n");
 	scanf("%s",&L->elem[i].type);
@@ -237,14 +142,14 @@ void AddL(Seqlist* L)
 	scanf("%s",&L->elem[i].name);
     getchar();
 
-	printf("选手电话号：\n");
+	printf("联系方式（电话号）：\n");
 	scanf("%s",&L->elem[i].phone);
     getchar();
 
 	L->elem[i].score = -1;
 	L->last++;
 
-	printf("选手信息添加成功。\n");
+	printf("节目信息添加成功。\n");
 }
 
 int FindL(Seqlist* L)
@@ -257,17 +162,16 @@ int FindL(Seqlist* L)
 	printf("选择要查找的方式：\n");
 
 	printf("1.类型查找\n2.电话号号查找\n3.节目名字查找\n");
-
-
 	scanf("%d",&have);
+
 	switch (have)
 	{
 		case 1: {
 			printf("输入类型：\n");
-			scanf("%s",&name);
+			scanf("%s",&type);
 			getchar();
 
-			while((i<L->last)&&(!(type==L->elem[i].type)))
+			while((i<L->last)&&(strcmp(type,L->elem[i].type)))
 				i++;
             }
 				break;
@@ -276,7 +180,7 @@ int FindL(Seqlist* L)
 			scanf("%s",&phone);
 			getchar();
 
-			while ((i<L->last) && (!(phone == L->elem[i].phone)))
+			while ((i<L->last) && (strcmp(phone,L->elem[i].phone)))
 				i++;
             }
 				break;
@@ -285,12 +189,13 @@ int FindL(Seqlist* L)
 			scanf("%s",&name);
 			getchar();
 
-			while ((i<L->last) && (!(name == L->elem[i].name)))
+			while ((i<L->last) && (strcmp(name,L->elem[i].name)))
 				i++;
             }
 				break;
-	}
-	if (i < L->last)
+    }
+
+	if (i <L->last)
 		return i;
 	else
 		return -1;
@@ -299,22 +204,23 @@ int FindL(Seqlist* L)
 void DelL(Seqlist* L)
 {
 	int s, i;
-	printf("已进入选手信息删除系统\n");
+	printf("删除节目信息\n");
 
 	s = FindL(L);
 
-	if (s == -1)
-		printf("未找到选手信息！\n");
-
+	if (s == -1){
+		printf("未找到节目信息！\n");
+	}
 	else
 	{
-		printf(" 要删除的选手信息是：\n");
+		printf(" 要删除的节目是：\n");
 		printf(" 节目类型  |   节目名称   |	电话号	| 成绩 |\n");
 
 		printf("|%12s",L->elem[s].type);
 		printf("|%14s",L->elem[s].name);
 		printf("|%12s",L->elem[s].phone);
 		printf("|%6s\n",L->elem[s].score);
+
 		for (i = s; i<L->last; i++)
 			L->elem[i] = L->elem[i + 1];
 		L->last--;
@@ -326,13 +232,15 @@ void DelL(Seqlist* L)
 void QueryL(Seqlist* L)
 {
     int s = FindL(L);
-	printf("进入选手信息查询系统。\n");
+	printf("查找节目。\n");
 
-	if (s == -1)
-		printf("未找到选手信息！\n");
+	if (s == -1){
+		printf("未找到节目信息\n");
+		printf("%s",L->elem[s+1].type);
+	}
 	else
 	{
-		printf("  查找成功,找到的是节目%s\n" ,L->elem[s].name);
+		printf("  查找成功\n");
 		printf("|  节目类型  |   节目名称   |	电话号	| 成绩 |\n");
 
 		printf("|%12s",L->elem[s].type);
@@ -347,10 +255,10 @@ void ChangeL(Seqlist* L)
     int s = FindL(L);
 	int have;
 
-	printf("  进入选手信息修改系统");
+	printf("修改节目信息");
 
 	if (s == -1)
-		printf("未找到选手信息！\n");
+		printf("未找到节目信息！\n");
 	else
 	{
 		printf("即将修改名字为%s的节目信息\n",L->elem[s].name);
@@ -433,7 +341,7 @@ void Grade(Seqlist* L,JudgeIn* J)
 void ShowL(Seqlist* L)
 {
     int i;
-	printf("显示全部选手的信息：\n");
+	printf("显示全部的节目信息：\n");
 
 	printf("节目类型  |   节目名称   |	电话号	| 成绩 |\n");
 
@@ -528,30 +436,126 @@ void SortL(Seqlist* L)
 	ShowL(L);
 }
 
+void UIL()
+{
+	printf("-------菜单\n");
+	printf("1.添加节目\n");
+	printf("2.删除节目\n");
+	printf("3.对总成绩排名\n");
+	printf("4.查询\n");
+	printf("5.修改节目信息\n");
+	printf("6.显示全部节目信息|\n");
+	printf("7.对节目进行打分\n");
+	printf("0.退出\n");
+}
+
+
+void UIJ()
+{
+	printf("---菜单\n");
+	printf("1.添加评委信息\n");
+	printf("2.显示全部评委信息\n");
+	printf("3.评委信息查询\n");
+	printf("0.退出\n");
+}
+
+
 void UI()
 {
 	printf("-------菜单\n");
-	printf("|1.选手信息|\n");
+	printf("|1.节目信息|\n");
 	printf("|2.评委信息|\n");
 	printf("|0.退出|\n");
+}
+
+void MenuL(Seqlist* L, JudgeIn* J)
+{
+	int i, have = 1;
+
+	while (UIL(),printf("选择要进行的功能：\n"),scanf("%d",&i))
+	{
+		switch (i)
+		{
+			case 1:
+			    AddL(L);
+			    break;
+			case 2:
+			    DelL(L);
+			    break;
+			case 3:
+			    SortL(L);
+			    break;
+			case 4:
+			    QueryL(L);
+			    break;
+			case 5:
+			    ChangeL(L);
+			    break;
+			case 6:
+			    ShowL(L);
+			    break;
+			case 7:
+			    Grade(L, J);
+			    break;
+			case 0:
+			    have = 0;
+			    break;
+		}
+
+		CopyL(L);
+		if (have == 0)
+			break;
+	}
+}
+
+void MenuJ(JudgeIn* J)
+{
+	int i, have = 1;
+
+	while (UIJ(),printf("选择要进行的功能："),scanf("%d",&i))
+	{
+		have = 1;
+
+		switch (i)
+		{
+		case 1:
+		    AddJ(J);
+		    break;
+		case 2:
+		    ShowJ(J);
+            break;
+		case 3:
+		    QueryJ(J);
+		    break;
+		case 0:
+		    have = 0;
+		    break;
+		}
+
+		CopyJ(J);
+
+		if (have == 0) {
+			printf(" 评委信息保存成功\n");
+			break;
+
+		}
+	}
 }
 
 void Menu(Seqlist* L, JudgeIn* J)
 {
 	int i, have = 1;
 
-	LoadJ(J);
-
-	LoadL(L);
-
 	while (UI(),printf("选择要进行的功能："),scanf("%d",&i))
 	{
 		switch (i)
 		{
 		case 1:
+		    LoadL(L);
 		    MenuL(L, J);
 		    break;
 		case 2:
+		    LoadJ(J);
 		    MenuJ(J);
 		    break;
 		case 0:
