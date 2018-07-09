@@ -1,6 +1,121 @@
+#include "cpp.h"
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <tchar.h>
+#include <cstdio>
+#include <iomanip>
+#include <vector>
+
+
+using namespace std;
+
+
+string Trim(string& str)
+{
+	str.erase(0, str.find_first_not_of("\t\r\n"));
+	str.erase(str.find_last_not_of("\t\r\n") + 1);
+	return str;
+}
+void CopyJ(JudgeIn* J)
+{
+	int i;
+	ofstream file("judges.csv", ios::out);
+	if (!file)
+	{
+		cout << "\t  文件打开失败！" << endl;
+	}
+	else
+	{
+		for (i = 0; i < J->last; i++)
+		{
+			file << J->elem[i].name << ","<< J->elem[i].sex << ","<< J->elem[i].phone << "\n";
+		}
+	}
+}
+
+
+void LoadJ(JudgeIn* J)
+{
+	string str;
+	int i = 1, j = 0, s = 0;
+
+	ifstream file("judges.csv" ,ios::in);
+
+	while (getline(file, str)) {
+		istringstream sin(str);
+		vector<string>fields;
+		string field;
+
+		while (getline(sin, field, ',')) {
+			fields.push_back(field);
+		}
+
+		strncpy(J->elem[s].name, Trim(fields[0]).c_str(), 20);
+        strncpy(J->elem[s].sex, Trim(fields[1]).c_str(), 2);
+        strncpy(J->elem[s].phone, Trim(fields[2]).c_str(), 13);
+		s++;
+	}
+	J->last = s;
+}
+
+string fileNamesL = "entertain.csv";
+
+void LoadL(Seqlist* L)
+{
+	string str;
+	int i = 1, j = 0, s = 0;
+	string scores;
+	ifstream file("entertain.csv", ios::in);
+	while (getline(file, str)) {
+		istringstream sin(str);
+		vector<string>fields;
+		string field;
+		while (getline(sin, field, ',')) {
+			fields.push_back(field);
+		}
+		strncpy(L->elem[s].name, Trim(fields[0]).c_str(), 20);
+		strncpy(L->elem[s].type, Trim(fields[1]).c_str(), 13);
+		strncpy(L->elem[s].phone, Trim(fields[2]).c_str(), 13);
+
+		scores = Trim(fields[2]);
+		L->elem[s].score = atof(scores.c_str());
+		s++;
+	}
+	L->last = s;
+}
+string doubleTranStr(double integer) {
+	stringstream ss;
+	ss << integer;
+	return ss.str();
+}
+void CopyL(Seqlist* L)
+{
+	int i;
+	string Score;
+	ofstream file("entertain.csv", ios::out);
+	if (!file)
+	{
+		cout << "\t  文件打开失败！" << endl;
+	}
+	else
+	{
+		for (i = 0; i < L->last; i++)
+		{
+			Score = doubleTranStr(L->elem[i].score);
+			file << L->elem[i].name << "," << L->elem[i].phone << ","<< L->elem[i].type<< "\n";
+		}
+	}
+}
+/*
 #include "head.h"
 
-
+extern void CopyJ(JudgeIn* J);
+extern void LoadJ(JudgeIn* J);
+extern void CopyL(Seqlist* L);
+extern void LoadL(Seqlist* L);
 
 void UIJ()
 {
@@ -36,7 +151,6 @@ void MenuJ(JudgeIn* J)
 		}
 
 		CopyJ(J);
-
 		if (have == 0) {
 			printf(" 裁判信息保存成功\n");
 			break;
@@ -117,7 +231,6 @@ void QueryJ(JudgeIn* J)
 	else
 		printf("抱歉，没有此人信息。\n");
 }
-/*
 void LoadL(Seqlist* L)
 {
 
@@ -170,7 +283,7 @@ void CopyL(Seqlist* L)
 		return;
 	}
 }
-*/
+
 
 void UIL()
 {
@@ -564,3 +677,4 @@ void Menu(Seqlist* L, JudgeIn* J)
 			break;
 	}
 }
+*/

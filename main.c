@@ -1,6 +1,5 @@
 #include "head.h"
 
-
 int main()
 {
  	/*SeqList *L=(SeqList *)malloc(sizeof(SeqList));
@@ -10,6 +9,7 @@ int main()
     */
     Seqlist L;
     JudgeIn J;
+
 
     L.last=0;
     J.last=0;

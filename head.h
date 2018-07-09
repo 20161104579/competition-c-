@@ -2,6 +2,19 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
+/*
+#ifndef HEAD
+#define HEAD
+
+extern "C" void CopyJ(JudgeIn* J);
+extern "C" void LoadJ(JudgeIn* J);
+extern "C" void CopyL(Seqlist* L);
+extern "C" void LoadL(Seqlist* L);
+#endif HEAD
+
+*/
+
+
 
 struct entertain{
     char name[20];
@@ -18,7 +31,7 @@ typedef struct {
 }Seqlist;
 
 struct Judges {
-	char sex;
+	char sex[2];
 	char name[20];
 	char phone[13];
 };
@@ -30,6 +43,8 @@ typedef struct {
 	int last;
 }JudgeIn;
 
+
+
 void UI();
 void Menu(Seqlist* L, JudgeIn* J);
 
@@ -37,8 +52,7 @@ void UIJ();
 int FindJ(JudgeIn* J);
 void MenuJ(JudgeIn* J);
 void AddJ(JudgeIn* J);
-void CopyJ(JudgeIn* J);
-void LoadJ(JudgeIn* J);
+
 void ShowJ(JudgeIn* J);
 void QueryJ(JudgeIn* J);
 
@@ -51,7 +65,12 @@ void QueryL(Seqlist* L);
 void ChangeL(Seqlist* L);
 void ShowL(Seqlist* L);
 void SortL(Seqlist* L);
-void CopyL(Seqlist* L);
-void LoadL(Seqlist* L);
+
 
 void Grade(Seqlist* L, JudgeIn* J);
+
+
+extern void CopyJ(JudgeIn* J);
+extern void LoadJ(JudgeIn* J);
+extern void CopyL(Seqlist* L);
+extern void LoadL(Seqlist* L);
