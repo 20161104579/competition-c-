@@ -1,7 +1,5 @@
 #include "head.h"
 
-
-
 void UIJ()
 {
 	printf("------菜单\n");
@@ -57,7 +55,7 @@ void AddJ(JudgeIn* J)
 	getchar();
 
 	printf("输入评委性别：");
-	scanf("%c",&J->elem[i].sex);
+	scanf("%s",&J->elem[i].sex);
     getchar();
 
 	printf("输入评委电话：");
@@ -77,7 +75,7 @@ void ShowJ(JudgeIn* J)
 	for (i = 0; i < J->last; i++)
 	{
 		printf("|%16s",J->elem[i].name);
-		printf("|%6c",J->elem[i].sex);
+		printf("|%6s",J->elem[i].sex);
 		printf("|%24s\n",J->elem[i].phone);
 	}
 
@@ -111,7 +109,7 @@ void QueryJ(JudgeIn* J)
 		printf("查找结束，已经找到信息.姓名为%s",J->elem[i].name);
 		printf("|  姓名  | 性别 |        电话号码        |\n");
         printf("|%16s",J->elem[i].name);
-		printf("|%6c",J->elem[i].sex);
+		printf("|%6s",J->elem[i].sex);
 		printf("|%24s",J->elem[i].phone);
 	}
 	else

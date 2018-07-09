@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
+#include "struct.h"
 /*
 #ifndef HEAD
 #define HEAD
@@ -14,7 +15,7 @@ extern "C" void LoadL(Seqlist* L);
 
 */
 
-
+/*
 
 struct entertain{
     char name[20];
@@ -43,7 +44,7 @@ typedef struct {
 	int last;
 }JudgeIn;
 
-
+*/
 
 void UI();
 void Menu(Seqlist* L, JudgeIn* J);

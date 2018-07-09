@@ -8,7 +8,8 @@
 #include <cstdio>
 #include <iomanip>
 #include <vector>
-
+#include <string.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -77,8 +78,8 @@ void LoadL(Seqlist* L)
 			fields.push_back(field);
 		}
 		strncpy(L->elem[s].name, Trim(fields[0]).c_str(), 20);
-		strncpy(L->elem[s].type, Trim(fields[1]).c_str(), 13);
-		strncpy(L->elem[s].phone, Trim(fields[2]).c_str(), 13);
+		strncpy(L->elem[s].type, Trim(fields[2]).c_str(), 13);
+		strncpy(L->elem[s].phone, Trim(fields[1]).c_str(), 13);
 
 		scores = Trim(fields[2]);
 		L->elem[s].score = atof(scores.c_str());

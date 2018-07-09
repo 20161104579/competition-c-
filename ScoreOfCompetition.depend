@@ -1,17 +1,18 @@
 # depslib dependency file v1.0
-1531127657 source:c:\users\chwnrui\documents\candc++\scoreofcompetition\fun.c
+1531134474 source:c:\users\chwnrui\documents\candc++\scoreofcompetition\fun.c
 	"head.h"
 
-1531127657 c:\users\chwnrui\documents\candc++\scoreofcompetition\head.h
+1531133781 c:\users\chwnrui\documents\candc++\scoreofcompetition\head.h
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
 	<string.h>
+	"struct.h"
 
-1531049533 source:c:\users\chwnrui\documents\candc++\scoreofcompetition\main.c
+1531133357 source:c:\users\chwnrui\documents\candc++\scoreofcompetition\main.c
 	"head.h"
 
-1531127567 source:c:\users\chwnrui\documents\candc++\scoreofcompetition\extra.cpp
+1531134207 source:c:\users\chwnrui\documents\candc++\scoreofcompetition\extra.cpp
 	"cpp.h"
 	<iostream>
 	<fstream>
@@ -21,12 +22,16 @@
 	<cstdio>
 	<iomanip>
 	<vector>
+	<string.h>
+	<stdlib.h>
 	"head.h"
 
 1531059755 c:\users\chwnrui\documents\candc++\scoreofcompetition\cpp.cpp
 
 1531059755 source:c:\users\chwnrui\documents\candc++\scoreofcompetition\cpp.cpp
 
-1531127913 c:\users\chwnrui\documents\candc++\scoreofcompetition\cpp.h
-	"head.h"
+1531133795 c:\users\chwnrui\documents\candc++\scoreofcompetition\cpp.h
+	"struct.h"
+
+1531133781 c:\users\chwnrui\documents\candc++\scoreofcompetition\struct.h
 

@@ -1,9 +1,10 @@
-#include "head.h"
+//#include "head.h"
+#include "struct.h"
 
 #ifndef CPP_H
 #define CPP_H
-    extern void CopyJ(JudgeIn* J);
-    extern void LoadJ(JudgeIn* J);
-    extern void CopyL(Seqlist* L);
-    extern void LoadL(Seqlist* L);
+    extern "C" void CopyJ(JudgeIn* J);
+    extern "C" void LoadJ(JudgeIn* J);
+    extern "C" void CopyL(Seqlist* L);
+    extern "C" void LoadL(Seqlist* L);
 #endif // CPP_H
